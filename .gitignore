@@ -1,0 +1,21 @@
+# IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# 后端
+backend/target/
+backend/*.log
+backend/src/main/resources/application-dev.yml
+backend/src/main/resources/application-prod.yml
+
+# 前端
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# 系统
+.DS_Store
+Thumbs.db

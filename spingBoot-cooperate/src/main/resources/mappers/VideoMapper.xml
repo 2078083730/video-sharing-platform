@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcu.mapper.VideoMapper">
+
+    <insert id="addVideo">
+        insert into s_video values(null,#{title},#{type},#{pic},#{basePath},#{uid},0)
+    </insert>
+
+    <select id="getVideos" resultType="videoDto">
+        select sv.id, title, type, pic, base_path as basePath, uid,dict.name as languageName,su.username,su.avatar
+        from s_video sv
+        left join dict on sv.type = dict.value and dict.group_type = 'language_type'
+        left join s_user su on su.id = sv.uid
+        <where>
+            sv.status = 2
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="id != 0">
+                and sv.id = #{id}
+            </if>
+
+        </where>
+    </select>
+    <select id="getDict">
+        select id,group_type as groupType,name,value,sort from dict
+        where group_type = #{value}
+    </select>
+    <insert id="addDanmu">
+        insert into s_danmu values(null,#{videoId},#{text},#{uid},#{time})
+    </insert>
+    <select id="getDanmuList" resultType="danMuDto">
+        select s_danmu.id,video_id as videoId,text,uid,time ,s_user.username
+        from s_danmu
+        left join s_user on s_user.id = s_danmu.uid
+        where video_id = #{value}
+    </select>
+
+
+    <resultMap id="talkMap" type="talkDto">
+        <id  property="id" column="id" ></id>
+        <result property="videoId" column="video_id"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="talkContent" column="talk_content"></result>
+        <result property="publishTime" column="publish_time"></result>
+        <result property="username" column="username"></result>
+        <result property="pic" column="pic"></result>
+        <collection property="replyDtoList" select="selectAllReply" column="id"></collection>
+    </resultMap>
+    <select id="selectAllTalkAndReply"  resultMap="talkMap">
+        select st.id,
+               video_id,
+               user_id,
+               talk_content,
+               publish_time,
+               href_info,
+               su.username,
+               su.avatar as pic
+        from s_talk st
+        left join s_user su on su.id = st.user_id
+        where video_id = #{videoId}
+    </select>
+    <select id="selectAllReply" resultType="replyDto">
+        select sr.id,
+               talk_id as talkId,
+               user_id as userId,
+               reply_content as replyContent,
+               reply_time as replyTime,
+               rname,
+               reply_href as replyHref,
+               su.username,
+               su.avatar as pic
+        from s_reply sr
+        left join s_user su on su.id = sr.user_id
+        where talk_id = #{talkId}
+    </select>
+    <insert id="addTalk">
+        insert into s_talk values(null,#{videoId},#{userId},#{talkContent},now(),#{hrefInfo})
+    </insert>
+
+    <insert id="addReply">
+        insert into s_reply values(null,#{talkId},#{userId},#{replyContent},now(),#{rname},#{replyHref})
+    </insert>
+
+
+    <select id="getVideoList" resultType="videoDto">
+        select sv.id, title, type, pic, base_path as basePath, uid,dict.name as languageName,su.username,su.avatar,status
+        from s_video sv
+        left join dict on sv.type = dict.value and dict.group_type = 'language_type'
+        left join s_user su on su.id = sv.uid
+        <where>
+
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+
+        </where>
+    </select>
+
+    <update id="changeVideoStatus">
+        update  s_video set status = #{status} where id = #{videoId}
+    </update>
+</mapper>

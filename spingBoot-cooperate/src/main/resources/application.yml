@@ -1,0 +1,47 @@
+#服务器端口号
+server:
+  port: 9090
+
+#配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/study_share?serverTimezone=UTC&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: "040526"
+  mail:
+    host: smtp.qq.com             # QQ 邮箱 SMTP 服务器地址
+    username: 2078083730@qq.com         # 发件人邮箱地址
+    password: amhslxotggdndbee # 授权码（非邮箱密码）
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true              # 需要验证身份
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true          # 启用 SSL 加密
+  ai:
+    zhipuai:
+      api-key: 9f4773c7e2f0475c841d43903c22c147.jY7xGjfEWqd3WyVe
+      chat:
+        options:
+          model: glm-4-air
+          temperature: 0.7
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+
+
+
+#配置mybatis
+mybatis-plus:
+  #配置mapper文件所在位置
+  mapper-locations: classpath:mappers/*.xml
+  #配置包别名
+  type-aliases-package: com.lcu.bean
+

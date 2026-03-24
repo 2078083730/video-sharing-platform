@@ -1,0 +1,5 @@
+@import './base.css';
+/* 讲项目所有的父页面高度改为100% */
+body,html,#app{
+    height: 100%;
+}
