@@ -20,11 +20,10 @@
 - Axios
 
 ## 目录结构
-├── backend/ # 后端代码（SpringBoot）
-├── frontend/ # 前端代码（Vue3）
-├── docs/ # 文档
-│ └── sql/ # 数据库脚本
-└── README.md
+backend/ # 后端代码（SpringBoot）
+frontend/ # 前端代码（Vue3）
+docs/ # 文档 - ql/ # 数据库脚本
+README.md
 
 text
 
